@@ -1,0 +1,79 @@
+body {
+  background-color: #202124;
+  display: grid;
+  justify-items: center;
+
+  .container {
+    max-width: 1180px;
+    .calculator {
+      max-width: 600px;
+      padding: 40px 20px;
+
+      .result {
+        display: grid;
+        justify-items: end;
+        align-items: center;
+        padding: 10px;
+        height: 50px;
+        font-size: 30px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: 1.5px solid #303134;
+        color: transparent;
+        text-shadow: 0 0 0 $white;
+      }
+      //   .result:hover {
+      //     cursor: default;
+      //     background-color: #303134;
+      //   }
+      //   .result:focus {
+      //     outline: none;
+      //     border: 1.5px solid $blue;
+      //   }
+      #btns-arr {
+        display: grid;
+        grid-template-columns: repeat(4, 90px);
+        grid-template-rows: repeat(5, 40px);
+        gap: 8px;
+
+        .btn {
+          background-color: $light-grey;
+          color: $white;
+          border-radius: 5px;
+          border: 0;
+          font-size: $fs-l;
+        }
+        .btn:nth-child(1),
+        .btn:nth-child(2) {
+          font-size: $fs-s;
+        }
+        .btn:nth-child(3) {
+          font-size: $fs-m;
+        }
+
+        .btn-num {
+          background-color: $dark-grey;
+          font-size: $fs-m;
+        }
+        .btn-result {
+          background-color: $blue;
+          color: #000;
+          font-weight: 700;
+        }
+        .btn:hover {
+          background-color: $light-grey-active;
+        }
+        .btn:active {
+          border: 1px solid #898989;
+        }
+        .btn-num:hover {
+          background-color: $dark-grey-active;
+        }
+
+        .btn-result:hover {
+          background-color: $blue-active;
+        }
+      }
+    }
+  }
+}
