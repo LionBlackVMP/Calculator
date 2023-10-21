@@ -1,2 +1,2 @@
 import "./main.scss";
-import "./js/calculator";
+import "./js/render";

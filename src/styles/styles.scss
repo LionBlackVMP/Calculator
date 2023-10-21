@@ -1,4 +1,5 @@
 body {
+  font-family: "Prompt", sans-serif;
   background-color: #202124;
   display: grid;
   justify-items: center;
@@ -6,6 +7,7 @@ body {
   .container {
     max-width: 1180px;
     .calculator {
+      margin-top: 200px;
       max-width: 600px;
       padding: 40px 20px;
 
@@ -22,15 +24,8 @@ body {
         color: transparent;
         text-shadow: 0 0 0 $white;
       }
-      //   .result:hover {
-      //     cursor: default;
-      //     background-color: #303134;
-      //   }
-      //   .result:focus {
-      //     outline: none;
-      //     border: 1.5px solid $blue;
-      //   }
-      #btns-arr {
+
+      #btns-container {
         display: grid;
         grid-template-columns: repeat(4, 90px);
         grid-template-rows: repeat(5, 40px);
