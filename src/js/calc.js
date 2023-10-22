@@ -4,7 +4,8 @@ const operators = {
   "×": (x, y) => x * y,
   "÷": (x, y) => x / y,
 };
-export const calc = (value) => {
+
+const calc = (value) => {
   // return answer
   const result = +RPNtoAnswer(expressionToRPN(value)).toFixed(10);
   if (result || result === 0) {
@@ -34,44 +35,50 @@ const expressionToRPN = (value) => {
   for (let i = 0; i < value.length; i++) {
     // checked value priority and return it in stack/str
     priority = getMathPriority(value[i]);
-    if (priority === 0) current += value[i];
-    if (priority === 1) {
-      stack.push(value[i]);
-    }
-    if (priority > 1) {
-      //   if element in stack have higher priority, than actual, take and put it in str
-      stack.forEach((el) => {
-        if (getMathPriority(stack[stack.length - 1]) >= priority) {
-          current += " ";
-          current += stack.pop();
-        }
-      });
-      current += " ";
-      stack.push(value[i]);
-    }
-    if (priority === -1) {
-      // take all elements till open braket and put it in str
-      current += " ";
-      for (; getMathPriority(stack[stack.length - 1]) != 1; ) {
-        current += stack.pop();
-      }
-      stack.pop();
+    switch (priority) {
+      case 0:
+        current += value[i];
+        break;
+      case 1:
+        stack.push(value[i]);
+        break;
+      case 2:
+      case 3:
+        //   if element in stack have higher priority, than actual, take and put it in str
+        stack.forEach((el) => {
+          if (getMathPriority(stack[stack.length - 1]) >= priority) {
+            current += " ";
+            current += stack.pop();
+          }
+        });
+        current += " ";
+        stack.push(value[i]);
+        break;
+      case -1:
+        // take all elements till open braket and put it in str
+        current += " ";
+        stack.forEach((el) => {
+          if (getMathPriority(stack[stack.length - 1]) != 1) current += `${stack.pop()} `;
+        });
+        stack.pop();
+        break;
     }
   }
-  for (; stack.length > 0; ) {
+  stack.reverse().forEach((el) => {
     // write all remaining elements on the stack to the result
-    current += ` ${stack.pop()}`;
-  }
+    current += ` ${el}`;
+  });
   return current;
 };
 
 const RPNtoAnswer = (expr) => {
   // make math operations with RPN
+  const arrRPN = [];
   const stack = [];
-  expr = expr.split(" ");
-  expr.forEach((token) => {
-    console.log(token);
-
+  expr = expr.split(" ").forEach((el) => {
+    if (el) arrRPN.push(el);
+  });
+  arrRPN.forEach((token) => {
     if (token in operators) {
       // take 2 last numbers in stack and make math operation and put result back in stack
       let [y, x] = [stack.pop(), stack.pop()];
@@ -83,6 +90,7 @@ const RPNtoAnswer = (expr) => {
   });
   return stack.pop();
 };
+
 const getMathPriority = (token) => {
   // return math symbol priority
   switch (token) {
@@ -100,3 +108,4 @@ const getMathPriority = (token) => {
       return 0;
   }
 };
+module.exports = { calc };

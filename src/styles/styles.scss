@@ -1,72 +1,99 @@
-body {
-  font-family: "Prompt", sans-serif;
-  background-color: #202124;
-  display: grid;
-  justify-items: center;
+html {
+  font-size: $base-fs;
 
-  .container {
-    max-width: 1180px;
-    .calculator {
-      margin-top: 200px;
-      max-width: 600px;
-      padding: 40px 20px;
-
-      .result {
-        display: grid;
-        justify-items: end;
-        align-items: center;
-        padding: 10px;
-        height: 50px;
-        font-size: 30px;
-        margin: 10px 0;
-        border-radius: 10px;
-        border: 1.5px solid #303134;
-        color: transparent;
-        text-shadow: 0 0 0 $white;
-      }
-
-      #btns-container {
-        display: grid;
-        grid-template-columns: repeat(4, 90px);
-        grid-template-rows: repeat(5, 40px);
-        gap: 8px;
-
-        .btn {
-          background-color: $light-grey;
+  body {
+    margin: 0;
+    font-family: "Prompt", sans-serif;
+    background-color: #202124;
+    display: grid;
+    justify-items: center;
+    .container {
+      max-width: px-to-rem(1180px);
+      .calculator {
+        margin-top: 12.5rem;
+        max-width: 37.5rem;
+        padding: 2.5rem 1.25rem;
+        .result_border {
+          display: grid;
+          align-items: center;
+          padding: 0.625rem;
+          height: 3.125rem;
+          font-size: px-to-rem(32px);
+          margin: 0.625rem 0;
+          border-radius: 0.625rem;
+          border: 1.5px solid #303134;
           color: $white;
-          border-radius: 5px;
-          border: 0;
-          font-size: $fs-l;
+          max-width: 24.5rem;
+          justify-items: end;
+          overflow: hidden;
+          .result_pad {
+            display: grid;
+            justify-items: end;
+            margin: 0 0.4rem;
+            overflow: hidden;
+          }
+          .result {
+            min-width: 0px;
+          }
         }
-        .btn:nth-child(1),
-        .btn:nth-child(2) {
-          font-size: $fs-s;
+        #btns-container {
+          display: grid;
+          grid-template-columns: repeat(4, 6rem);
+          grid-template-rows: repeat(5, 3rem);
+          gap: 8px;
+          .btn {
+            background-color: $light-grey;
+            color: $white;
+            border-radius: 5px;
+            border: 0;
+            font-size: px-to-rem($fs-l);
+          }
+          .btn:nth-child(1),
+          .btn:nth-child(2) {
+            font-size: px-to-rem($fs-s);
+          }
+          .btn:nth-child(3) {
+            font-size: px-to-rem($fs-m);
+          }
+          .btn-num {
+            background-color: $dark-grey;
+            font-size: px-to-rem($fs-m);
+          }
+          .btn-result {
+            background-color: $blue;
+            color: #000;
+            font-weight: 700;
+          }
+          .btn:hover {
+            background-color: $light-grey-active;
+          }
+          .btn:active {
+            border: 1px solid #898989;
+          }
+          .btn-num:hover {
+            background-color: $dark-grey-active;
+          }
+          .btn-result:hover {
+            background-color: $blue-active;
+          }
         }
-        .btn:nth-child(3) {
-          font-size: $fs-m;
-        }
+      }
+    }
+  }
 
-        .btn-num {
-          background-color: $dark-grey;
-          font-size: $fs-m;
-        }
-        .btn-result {
-          background-color: $blue;
-          color: #000;
-          font-weight: 700;
-        }
-        .btn:hover {
-          background-color: $light-grey-active;
-        }
-        .btn:active {
-          border: 1px solid #898989;
-        }
-        .btn-num:hover {
-          background-color: $dark-grey-active;
-        }
-
-        .btn-result:hover {
-          background-color: $blue-active;
+  @media (max-width: 575px) {
+    body {
+      .container {
+        .calculator {
+          padding: 1.25rem 5px;
+          .result_border {
+            font-size: px-to-rem(28px);
+          }
+          #btns-container {
+            grid-template-columns: repeat(4, 5rem);
+            grid-template-rows: repeat(5, 3rem);
+            gap: 6px;
+          }
         }
       }
     }

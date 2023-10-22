@@ -6,6 +6,11 @@ $white: #fff;
 $blue: #8ab4f8;
 $blue-active: #aecbfa;
 
-$fs-s: 13px;
-$fs-m: 14px;
-$fs-l: 18px;
+$fs-s: 15px;
+$fs-m: 16px;
+$fs-l: 22px;
+$base-fs: $fs-m;
+
+@function px-to-rem($px) {
+  @return calc($px / $base-fs) * 1rem;
+}
