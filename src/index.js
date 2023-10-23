@@ -1,2 +1,2 @@
 import "./main.scss";
-import "./js/render";
+import "./js/render.js";

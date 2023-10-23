@@ -5,7 +5,7 @@ const operators = {
   "÷": (x, y) => x / y,
 };
 
-const calc = (value) => {
+export const calc = (value) => {
   // return answer
   const result = +RPNtoAnswer(expressionToRPN(value)).toFixed(10);
   if (result || result === 0) {
@@ -108,4 +108,3 @@ const getMathPriority = (token) => {
       return 0;
   }
 };
-module.exports = { calc };

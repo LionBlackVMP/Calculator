@@ -1,5 +1,6 @@
-const { calc } = require("../src/js/calc");
-const expect = require("chai").expect;
+import { calc } from "../src/js/calc.js";
+import { expect } from "chai";
+import { validBraces } from "../src/js/render.js";
 
 const createRandomNumbers = () => {
   const positiveNums = [
