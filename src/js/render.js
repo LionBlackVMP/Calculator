@@ -1,9 +1,8 @@
 import { calc } from "./calc.js";
-
 const btnsArr = ["(", ")", "C", "×", 7, 8, 9, "÷", 4, 5, 6, "+", 1, 2, 3, "-", 0, "00", ".", "="];
 const obj = { str: "", isResult: false };
 
-if (!typeof document) {
+if (typeof document !== "undefined") {
   const buttons = document.getElementById("btns-container");
   const result = document.querySelector(".result");
 
