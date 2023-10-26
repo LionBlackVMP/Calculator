@@ -3,32 +3,47 @@ const operators = {
   "-": (x, y) => x - y,
   "×": (x, y) => x * y,
   "÷": (x, y) => x / y,
+  "(": "(",
+  ")": ")",
 };
 
 export const calc = (value) => {
   // return answer
-  const result = +RPNtoAnswer(expressionToRPN(value)).toFixed(10);
+  const result = RPNtoAnswer(expressionToRPN(value));
   if (result || result === 0) {
-    return result;
+    return +result.toFixed(10);
   }
   return "Error";
 };
 
-const addZeroToNegativeNumbers = (str) => {
+const isOperatorOutOfBrackets = (value) => {
+  // if before open bracket and after close bracket is not any math symbol
+  // add multiplication
+  value = value.split("");
+  const stack = [];
+  for (let i = 0; i < value.length; i++) {
+    if (!operators[value[i - 1]]) if (value[i] === "(" && value[i - 1]) stack.push("×");
+    stack.push(value[i]);
+    if (!operators[value[i + 1]]) if (value[i] === ")" && i + 1 !== value.length) stack.push("×");
+  }
+  return stack.join("");
+};
+
+export const addZeroToNegativeNumbers = (value) => {
   // check if first number or number after open braket is negative and add 0 before
-  str = str.split("");
+  value = value.split("");
   let stack = [];
-  if (str[0] === "-") stack.push("0");
-  for (let k = 0; k < str.length; k++) {
-    if (str[k] === "-" && str[k - 1] === "(") stack.push("0");
-    stack.push(str[k]);
+  if (value[0] === "-") stack.push("0");
+  for (let k = 0; k < value.length; k++) {
+    if (value[k] === "-" && value[k - 1] === "(") stack.push("0");
+    stack.push(value[k]);
   }
   return stack.join("");
 };
 
 const expressionToRPN = (value) => {
   //  write the expression in RPN (Reverse Polish Notation)
-  value = addZeroToNegativeNumbers(value);
+  value = addZeroToNegativeNumbers(isOperatorOutOfBrackets(value));
   const stack = [];
   let current = "";
   let priority;

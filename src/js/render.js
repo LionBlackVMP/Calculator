@@ -1,6 +1,6 @@
 import { calc } from "./calc.js";
-const btnsArr = ["(", ")", "C", "×", 7, 8, 9, "÷", 4, 5, 6, "+", 1, 2, 3, "-", 0, "00", ".", "="];
-const obj = { str: "", isResult: false };
+const btnsArr = ["(", ")", "CE", "×", 7, 8, 9, "÷", 4, 5, 6, "+", 1, 2, 3, "-", 0, "00", ".", "="];
+const obj = { str: "" };
 
 if (typeof document !== "undefined") {
   const buttons = document.getElementById("btns-container");
@@ -23,13 +23,14 @@ if (typeof document !== "undefined") {
   const handleButtonClick = (e) => {
     // depend on condition make a action
     if (!e.target.classList.contains("btn")) return;
-    let value = e.target.innerHTML;
-    isResult(value);
+    const value = e.target.innerHTML;
+    obj.str = String(obj.str);
+    if (obj.str === "Error" || obj.str === "0") resetCalculator();
     if (isMathSymbol(value)) {
       handleMathSymbol(value);
-    } else if (value === "C") {
-      resetCalculator();
-    } else if (value === ")" && !validBraces(obj.str, value)) {
+    } else if (value === "CE") {
+      deleteLastSymbol();
+    } else if (value === ")" && validBraces(obj.str, value)) {
       return;
     } else if (value === "=") {
       handleEquals();
@@ -39,12 +40,14 @@ if (typeof document !== "undefined") {
     }
   };
 
-  const isResult = (value) => {
-    // keep result if was pressed button with math operations
-    if (obj.isResult === true && !isMathSymbol(value)) {
-      resetCalculator();
+  const deleteLastSymbol = () => {
+    // delete last symbol, if symbol only one change it to 0
+    if (obj.str.length > 1) {
+      obj.str = obj.str.slice(0, -1);
+    } else {
+      obj.str = "0";
     }
-    obj.isResult = false;
+    result.innerHTML = obj.str;
   };
 
   const isMathSymbol = (value) => {
@@ -82,7 +85,6 @@ if (typeof document !== "undefined") {
 
   const handleEquals = () => {
     // send expression to calculate
-    obj.isResult = true;
     if (obj.str === "") obj.str = "0";
     if (validBraces(obj.str, "=")) {
       obj.str = calc(obj.str);
@@ -90,18 +92,25 @@ if (typeof document !== "undefined") {
     }
   };
 }
-export const validBraces = (braces, value) => {
+
+const isBothTypeofBracExist = (braces, value) => {
   // check sum and position open and closed brackets
-  let char = braces + value;
+  if (!braces) return true;
+  const openBrackets = braces.match(/[(]/g);
+  const closeBrackets = braces.match(/[)]/g);
+  const arr = [openBrackets, closeBrackets];
+  if (value !== "=") {
+    // forbidden create more closed Brackets than open
+    if (arr.openBrackets && arr.closeBrackets)
+      if (arr.openBrackets.length > arr.closeBrackets.length) return true;
+  }
+};
+
+export const validBraces = (braces, value) => {
   const brackets = { "(": ")" };
   const stack = [];
-  const openBrakets = char.match(/[(]/g);
-  const closeBrakets = char.match(/[)]/g);
-  // forbidden create more closed brakets than open
-  if (value !== "=") {
-    if (openBrakets) if (openBrakets.length > closeBrakets.length) return true;
-  }
-  char = char.match(/[()]/g);
+  isBothTypeofBracExist(braces, value);
+  let char = braces.match(/[()]/g);
   if (!char) return true;
   for (let i = 0; i < char.length; i++) {
     if (brackets[char[i]]) {

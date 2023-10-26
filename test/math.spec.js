@@ -1,7 +1,6 @@
-import { calc } from "../src/js/calc.js";
+import { addZeroToNegativeNumbers, calc } from "../src/js/calc.js";
 import { expect } from "chai";
 import { validBraces } from "../src/js/render.js";
-
 const createRandomNumbers = () => {
   const positiveNums = [
     Math.round(Math.random() * 100),
@@ -22,7 +21,7 @@ const createRandomNumbers = () => {
   return randNums;
 };
 
-describe("test with function calc", () => {
+describe("calc", () => {
   it("calc expressions with positive numbers", () => {
     for (let i = 0; i < 100; i++) {
       let obj = createRandomNumbers();
@@ -48,5 +47,28 @@ describe("test with function calc", () => {
       let equalResult = (obj.plus[0] * obj.minus[1]) / (-obj.minus[2] - obj.plus[3]);
       expect(calc(expectedResult).toFixed(10)).equal(equalResult.toFixed(10));
     }
+  });
+});
+
+describe("brackets", () => {
+  it("check sum brackets", () => {
+    expect(validBraces("()))")).equal(false);
+    expect(validBraces("()")).equal(true);
+    expect(validBraces(")(")).equal(false);
+    expect(validBraces("()()")).equal(true);
+    expect(validBraces("(((")).equal(false);
+    expect(validBraces(")")).equal(false);
+    expect(validBraces("(")).equal(false);
+    expect(validBraces("((())())")).equal(true);
+  });
+});
+
+describe("expressionToRPN", () => {
+  it("add 0 to negative numbers", () => {
+    expect(addZeroToNegativeNumbers("-2")).equal("0-2");
+    expect(addZeroToNegativeNumbers("0")).equal("0");
+    expect(addZeroToNegativeNumbers("-2+(-0)")).equal("0-2+(0-0)");
+    expect(addZeroToNegativeNumbers("-2+(-1-(-3))")).equal("0-2+(0-1-(0-3))");
+    expect(addZeroToNegativeNumbers("-(-10-((-1)-2))")).equal("0-(0-10-((0-1)-2))");
   });
 });
