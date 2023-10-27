@@ -1,6 +1,6 @@
 import { calc } from "./calc.js";
 const btnsArr = ["(", ")", "CE", "×", 7, 8, 9, "÷", 4, 5, 6, "+", 1, 2, 3, "-", 0, "00", ".", "="];
-const obj = { str: "", isResult: false };
+export const inputValue = { str: "", isResult: false };
 
 if (typeof document !== "undefined") {
   const buttons = document.getElementById("btns-container");
@@ -24,37 +24,37 @@ if (typeof document !== "undefined") {
     // depend on condition make a action
     if (!e.target.classList.contains("btn")) return;
     const value = e.target.innerHTML;
-    obj.str = String(obj.str);
-    if (obj.str === "Error") resetCalculator();
+    inputValue.str = String(inputValue.str);
+    if (inputValue.str === "Error") resetCalculator();
     if (isMathSymbol(value)) {
-      obj.isResult = false;
+      inputValue.isResult = false;
       handleMathSymbol(value);
     } else if (value === "CE") {
       deleteLastSymbol();
-    } else if (value === ")" && validBraces(obj.str, value)) {
+    } else if (value === ")" && validBraces(inputValue.str, value)) {
       return;
     } else if (value === "=") {
       handleEquals();
     } else {
-      if (obj.isResult) {
-        obj.str = value;
+      if (inputValue.isResult) {
+        inputValue.str = value;
       } else {
-        obj.str += value;
+        inputValue.str += value;
       }
-      obj.isResult = false;
-      result.innerHTML = obj.str;
+      inputValue.isResult = false;
+      result.innerHTML = inputValue.str;
     }
   };
 
   const deleteLastSymbol = () => {
     // delete last symbol, if symbol only one change it to 0
-    if (obj.isResult) return resetCalculator();
-    if (obj.str.length > 1) {
-      obj.str = obj.str.slice(0, -1);
+    if (inputValue.isResult) return resetCalculator();
+    if (inputValue.str.length > 1) {
+      inputValue.str = inputValue.str.slice(0, -1);
     } else {
-      obj.str = "";
+      inputValue.str = "";
     }
-    result.innerHTML = obj.str;
+    result.innerHTML = inputValue.str;
   };
 
   const isMathSymbol = (value) => {
@@ -64,39 +64,38 @@ if (typeof document !== "undefined") {
 
   const handleMathSymbol = (value) => {
     // control if current negative value have right syntax with brackets
-    if (obj.str === "") return;
-    const lastSymbol = obj.str[obj.str.length - 1];
-    const penultSymbol = obj.str[obj.str.length - 2];
+    if (inputValue.str === "") return;
+    const lastSymbol = inputValue.str[inputValue.str.length - 1];
+    const penultSymbol = inputValue.str[inputValue.str.length - 2];
     if (lastSymbol === "(" && isMathSymbol(value) && value !== "-") return; // after open bracket possible to write only minus
     if (lastSymbol && isMathSymbol(lastSymbol)) {
       if (penultSymbol !== "(") updateMathSymbol(value); // possible to replace math operation
     } else {
-      obj.str += value;
-      result.innerHTML = obj.str;
+      inputValue.str += value;
+      result.innerHTML = inputValue.str;
     }
   };
 
   const updateMathSymbol = (value) => {
     // change math operations
-    let arr = obj.str.split("");
+    let arr = inputValue.str.split("");
     arr.splice(-1, 1, value);
-    obj.str = arr.join("");
-    result.innerHTML = obj.str;
+    inputValue.str = arr.join("");
+    result.innerHTML = inputValue.str;
   };
 
   const resetCalculator = () => {
     //reset input value
-    obj.str = "0";
+    inputValue.str = "0";
     result.innerHTML = "0";
   };
 
   const handleEquals = () => {
     // send expression to calculate
-    obj.isResult = true;
-    if (obj.str === "") obj.str = "";
-    if (validBraces(obj.str, "=")) {
-      obj.str = calc(obj.str);
-      result.innerHTML = obj.str;
+    if (inputValue.str === "") inputValue.str = "";
+    if (validBraces(inputValue.str, "=")) {
+      inputValue.str = calc(inputValue.str);
+      result.innerHTML = inputValue.str;
     }
   };
 }

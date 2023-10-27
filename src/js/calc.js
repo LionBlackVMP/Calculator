@@ -1,3 +1,4 @@
+import { inputValue } from "./render.js";
 const operators = {
   "+": (x, y) => x + y,
   "-": (x, y) => x - y,
@@ -10,6 +11,7 @@ const operators = {
 export const calc = (value) => {
   // return answer
   const result = RPNtoAnswer(expressionToRPN(value));
+  inputValue.isResult = true;
   if (result || result === 0) {
     return +result.toFixed(10);
   }
