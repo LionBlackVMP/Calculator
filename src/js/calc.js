@@ -43,6 +43,7 @@ export const addZeroToNegativeNumbers = (value) => {
 
 const expressionToRPN = (value) => {
   //  write the expression in RPN (Reverse Polish Notation)
+  if (value === "") value = "0";
   value = addZeroToNegativeNumbers(isOperatorOutOfBrackets(value));
   const stack = [];
   let current = "";
@@ -86,7 +87,7 @@ const expressionToRPN = (value) => {
   return current;
 };
 
-const RPNtoAnswer = (expr) => {
+export const RPNtoAnswer = (expr) => {
   // make math operations with RPN
   const arrRPN = [];
   const stack = [];

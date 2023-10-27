@@ -1,6 +1,6 @@
 import { calc } from "./calc.js";
 const btnsArr = ["(", ")", "CE", "×", 7, 8, 9, "÷", 4, 5, 6, "+", 1, 2, 3, "-", 0, "00", ".", "="];
-const obj = { str: "" };
+const obj = { str: "", isResult: false };
 
 if (typeof document !== "undefined") {
   const buttons = document.getElementById("btns-container");
@@ -25,8 +25,9 @@ if (typeof document !== "undefined") {
     if (!e.target.classList.contains("btn")) return;
     const value = e.target.innerHTML;
     obj.str = String(obj.str);
-    if (obj.str === "Error" || obj.str === "0") resetCalculator();
+    if (obj.str === "Error") resetCalculator();
     if (isMathSymbol(value)) {
+      obj.isResult = false;
       handleMathSymbol(value);
     } else if (value === "CE") {
       deleteLastSymbol();
@@ -35,17 +36,23 @@ if (typeof document !== "undefined") {
     } else if (value === "=") {
       handleEquals();
     } else {
-      obj.str += value;
+      if (obj.isResult) {
+        obj.str = value;
+      } else {
+        obj.str += value;
+      }
+      obj.isResult = false;
       result.innerHTML = obj.str;
     }
   };
 
   const deleteLastSymbol = () => {
     // delete last symbol, if symbol only one change it to 0
+    if (obj.isResult) return resetCalculator();
     if (obj.str.length > 1) {
       obj.str = obj.str.slice(0, -1);
     } else {
-      obj.str = "0";
+      obj.str = "";
     }
     result.innerHTML = obj.str;
   };
@@ -79,13 +86,14 @@ if (typeof document !== "undefined") {
 
   const resetCalculator = () => {
     //reset input value
-    obj.str = "";
-    result.innerHTML = "";
+    obj.str = "0";
+    result.innerHTML = "0";
   };
 
   const handleEquals = () => {
     // send expression to calculate
-    if (obj.str === "") obj.str = "0";
+    obj.isResult = true;
+    if (obj.str === "") obj.str = "";
     if (validBraces(obj.str, "=")) {
       obj.str = calc(obj.str);
       result.innerHTML = obj.str;

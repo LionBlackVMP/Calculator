@@ -1,4 +1,4 @@
-import { addZeroToNegativeNumbers, calc } from "../src/js/calc.js";
+import { RPNtoAnswer, addZeroToNegativeNumbers, calc } from "../src/js/calc.js";
 import { expect } from "chai";
 import { validBraces } from "../src/js/render.js";
 const createRandomNumbers = () => {
@@ -21,7 +21,7 @@ const createRandomNumbers = () => {
   return randNums;
 };
 
-describe("calc", () => {
+describe("general  calculation", () => {
   it("calc expressions with positive numbers", () => {
     for (let i = 0; i < 100; i++) {
       let obj = createRandomNumbers();
@@ -63,12 +63,20 @@ describe("brackets", () => {
   });
 });
 
-describe("expressionToRPN", () => {
+describe("expression to RPN", () => {
   it("add 0 to negative numbers", () => {
     expect(addZeroToNegativeNumbers("-2")).equal("0-2");
     expect(addZeroToNegativeNumbers("0")).equal("0");
     expect(addZeroToNegativeNumbers("-2+(-0)")).equal("0-2+(0-0)");
     expect(addZeroToNegativeNumbers("-2+(-1-(-3))")).equal("0-2+(0-1-(0-3))");
     expect(addZeroToNegativeNumbers("-(-10-((-1)-2))")).equal("0-(0-10-((0-1)-2))");
+  });
+});
+
+describe("RPN to solve", () => {
+  it("solve RPN expression", () => {
+    expect(RPNtoAnswer("3 4 - 5 +")).equal(4);
+    expect(RPNtoAnswer("1 2 + 3 4 + ×")).equal(21);
+    expect(RPNtoAnswer("2 1 + 8 ×")).equal(24);
   });
 });
